@@ -7,7 +7,4 @@ Christoph Nahr's distribution: http://kynosarges.org/CommentReflower.html
 
 Ian Nowland's distribution: http://commentreflower.sourceforge.net/
 
-Deployment for Visual Studio 2012, 2013 and 2015: Simply run the VSIX installer to deploy.
-
-Requires the Visual Studio 2012 Isolated Shell to compile if VS2012 is not installed:
-https://www.microsoft.com/en-us/download/details.aspx?id=30670
+Deployment for Visual Studio 2012, 2013, 2015, and 2017: Simply run the VSIX installer to deploy.

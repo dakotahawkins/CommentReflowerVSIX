@@ -17,8 +17,6 @@
 
 using System;
 using System.IO;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using CommentReflowerLib;
 
 namespace CommentReflowerTest

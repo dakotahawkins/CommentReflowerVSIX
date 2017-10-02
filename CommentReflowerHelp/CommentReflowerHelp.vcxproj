@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Help|Win32">
       <Configuration>Help</Configuration>
@@ -9,59 +9,58 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3D6627A1-3D77-4EBD-9897-F9DE06B4E69D}</ProjectGuid>
     <Keyword>MakeFileProj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Help|Win32'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Help|Win32'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Help|Win32'">
-    <NMakeOutput>$(ProjectName).chm</NMakeOutput>
-    <NMakePreprocessorDefinitions>
-    </NMakePreprocessorDefinitions>
-    <OutDir>$(ProjectDir)</OutDir>
-    <IntDir>$(ProjectDir)</IntDir>
-    <NMakeBuildCommandLine>build.bat $(ProjectName)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>rebuild.bat $(ProjectName)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>clean.bat $(ProjectName)</NMakeCleanCommandLine>
+  <PropertyGroup>
+    <OutDir>$(ProjectDir)..\CommentReflower\</OutDir>
+    <IntDir>$(ProjectDir)intermediate</IntDir>
+    <TargetName>$(ProjectName).chm</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
+    <CustomBuild>
+      <LinkObjects>false</LinkObjects>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="BreakFlowStringsSettings.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="BulletPointSettings.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Commands.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="CommentBlockSettings.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="CommentReflowerHelp.hhp">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="Contents.hhc" />
-    <None Include="GeneralSettings.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Index.hhk" />
-    <None Include="Introduction.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Settings.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
+    <Text Include="BreakFlowStringsSettings.htm" />
+    <Text Include="BulletPointSettings.htm" />
+    <Text Include="Commands.htm" />
+    <Text Include="CommentBlockSettings.htm" />
+    <Text Include="Contents.hhc" />
+    <Text Include="GeneralSettings.htm" />
+    <Text Include="Index.hhk" />
+    <Text Include="Introduction.htm" />
+    <Text Include="Settings.htm" />
+    <CustomBuild Include="..\gpl.rtf">
+      <Message>Copying license...</Message>
+      <Command>xcopy /d /y  %(Identity) $(OutDir)%(Filename)%(Extension)</Command>
+      <Outputs>$(OutDir)%(Filename)%(Extension)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="CommentReflowerHelp.hhp">
+      <Message>Generating help file...</Message>
+      <Outputs>$(TargetPath)</Outputs>
+      <AdditionalInputs>@(Text);%(AdditionalInputs)</AdditionalInputs>
+      <Command>rem hhc returns 0 on failure and 1 on success
+hhc %(Identity)
+if not errorlevel 1 exit /B 1
+
+xcopy /d /y $(TargetName) $(TargetPath)
+if errorlevel 1 exit /B 1
+</Command>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
